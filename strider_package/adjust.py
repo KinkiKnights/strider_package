@@ -120,9 +120,9 @@ class StriderWalkIK():
         self.first = True;
         self.start();
         
-        self.wait_time = 0.2
+        self.wait_time = 0.15
         self.diff = -0.03
-        self.start = 0.3
+        self.start = 0.35
         self.finish = -0.35
         self.forward = 0.03
         self.backward = -0.03
@@ -138,7 +138,7 @@ class StriderWalkIK():
         stepB = center - quat
 
         leg = [stepA, stepB, stepB, stepA]
-        y_adjust = [0,0.025,0,0.025]
+        y_adjust = [0,0.03,0,0.03]
         
         while(self.run):
             time.sleep(self.wait_time);
@@ -158,10 +158,10 @@ class StriderWalkIK():
                     leg[idx] = leg[idx] + (self.start - self.finish)
                     time.sleep(0.1)
                     self.movUP(idx, leg[idx], self.raise_y, 11)
-                    time.sleep(0.3)
+                    time.sleep(0.2)
                     y_diff = abs(center - leg[idx]) * self.y_gain
                     self.mov(idx, leg[idx], self.stand_y - y_diff + y_adjust[idx], 10)
-                    time.sleep(0.5)
+                    time.sleep(0.3)
             for idx in range(4):
                 y_diff = abs(center - leg[idx]) * self.y_gain
                 self.mov(idx, leg[idx], self.stand_y - y_diff + y_adjust[idx], 8)
