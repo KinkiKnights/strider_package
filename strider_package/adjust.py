@@ -32,7 +32,7 @@ class StriderWalkIK():
     def publishCmd(self, msg):
         rev = [-1, 1, 1, -1, -1, 1, 1, -1]
         common_center = 750
-        center = [700, 700, 700, 710, 650, 700, 500, 720]
+        center = [720, 870, 770, 950, 650, 940, 470, 940]
         # center = [700, 700, 700, 710, 750, 700, 600, 720]
         self.node.get_logger().info(f'Published(bef adjust): {msg}')
         for idx in range(len(msg.port)):
@@ -72,6 +72,7 @@ class StriderWalkIK():
         return True
     # 機構動作
     def mov(self, idx, x, y, speed = 7):
+        print(idx, x, y)
         self.last_x[idx] = x
         root, leg = self.calc(x,y)
         if (self.checkBreak(x, y)):
@@ -91,7 +92,10 @@ class StriderWalkIK():
             msg = PwmCmd()
             msg.child_id = 0
             msg.port = [idx * 2, idx * 2 + 1]
-            msg.pos = [self.rad2Duty(3.1), self.rad2Duty(root)]
+            if (x < -0.5):
+                msg.pos = [self.rad2Duty(3.1), self.rad2Duty(-0.5)]
+            else:
+                msg.pos = [self.rad2Duty(3.1), self.rad2Duty(root)]
             msg.spd = [speed, speed]
             self.publishCmd(msg)
             return True
@@ -100,11 +104,11 @@ class StriderWalkIK():
     def start(self):        
         self.jump_idx = [1.0, 1.0, 1.0, 1.0]
         self.base_y = 0.9
-        self.jump_y = 0.4
+        self.jump_y = 0.3
         self.base_x = 0
         self.grand_x = [0.35, 0.05, 0.2, -0.1]
         self.x_offset = [ -0.15, -0.15, 0, 0]
-        self.y_offset = [-0.1, -0.05, -0.05, 0]
+        self.y_offset = [-0.03, -0.03, -0.05, -0.025]
 
         self.LIMIT_X = -0.2
         self.START_X = 0.4
@@ -115,12 +119,19 @@ class StriderWalkIK():
         self.run = True;
         self.first = True;
         self.start();
+        self.in_step = True;
+        self.is_step = False;
+        self.back = False;
+        self.last_step = False;
 
         start_x = 0.5;
         finish_x = -0.5
-        base_y = 0.85
-        jump_y = 0.5
+        base_y = [0.85, 0.60, 0.85, 0.85]
+        jump_y = 0.40
+        jump_returd = -0.15
         jump_mode  = [False, False, False, False]
+        leg_mode  = [False, False, False, False]
+        step_mode  = [0, 0, 0, 0]
 
         all_speed = 1
         control_hz = 10;
@@ -151,23 +162,67 @@ class StriderWalkIK():
 
                     if (jump_mode[idx]):
                         # self.mov(idx, x, jump_y + self.y_offset[idx], 11);
-                        self.movUP(idx, start_x + self.x_offset[idx], base_y + self.y_offset[idx], 15);
+                        self.movUP(idx, start_x + self.x_offset[idx], base_y[step_mode[idx]] + self.y_offset[idx], 15);
                     else:
-                        self.mov(idx, finish_x , jump_y, 15);
-                        time.sleep(0.15)
-                        self.movUP(idx, finish_x + self.x_offset[idx], jump_y + self.y_offset[idx], 15);
-                        time.sleep(0.1)
+                        """
+                        初回ジャンプ処理
+                        """
+                        if (idx < 2): 
+                            """
+                            # 前足ステップ判定
+                            """
+                            while not(self.in_step):
+                                time.sleep(0.1);
+                            if (self.is_step):
+                                step_mode[idx] = 1;
+                            elif(self.last_step):
+                                step_mode[idx] = 2;
+                                self.last_step = False
+                            else:
+                                step_mode[idx] = 0;
+                            if (self.back):
+                                leg_mode[idx + 2] = True;
+                                self.back = False;
+                            else :
+                                leg_mode[idx + 2] = False;
+                            self.in_step = False
+                            self.last_step = self.is_step;
+                        else:
+                            """
+                            # 後足ステップ判定
+                            """
+                            step_mode[idx] = step_mode[idx - 2]
+                            if (leg_mode[idx]):
+                                step_mode[idx] = 1;
+                                leg_mode[idx] = True;
+                        if (step_mode[idx] == 3):
+                            """
+                            降壇用ジャンプ
+                            """
+                            self.mov(idx, finish_x +down_returd, jump_y , 15);
+                            time.sleep(1)
+                            self.movUP(idx, finish_x + self.x_offset[idx] +jump_returd,  jump_y + self.y_offset[idx], 15);
+                            time.sleep(1)
+                        else:
+                            """
+                            通常ジャンプ
+                            """
+                            self.mov(idx, finish_x +jump_returd, jump_y , 15);
+                            time.sleep(1)
+                            self.movUP(idx, finish_x + self.x_offset[idx] +jump_returd,  jump_y + self.y_offset[idx], 15);
+                            time.sleep(1)
                     jump_mode[idx] = True;
                 else:
                     x = (finish_x - start_x) / (sequence_full - jump_full) * (frame_count - jump_full) + start_x  + self.x_offset[idx];
                     
+                    
                     if (jump_mode[idx]):
-                        self.movUP(idx, start_x + self.x_offset[idx], base_y + self.y_offset[idx], 15);
+                        self.movUP(idx, start_x + self.x_offset[idx], base_y[step_mode[idx]] + self.y_offset[idx], 15);
                         time.sleep(jump_wait)
-                        self.mov(idx, start_x, base_y + self.y_offset[idx], 8);
+                        self.mov(idx, start_x, base_y[step_mode[idx]] + self.y_offset[idx], 8);
                         time.sleep(jump_wait)
                     else:
-                        self.mov(idx, x, base_y + self.y_offset[idx], 11);
+                        self.mov(idx, x, base_y[step_mode[idx]] + self.y_offset[idx], 11);
                     jump_mode[idx] = False;
 
 
@@ -191,12 +246,16 @@ class PwmCmdPublisher(Node):
     
     def publishDown(self):
         # メッセージの作成とデータ設定
-        msg = PwmCmd()
-        msg.child_id = 0  # 任意の値を設定
-        msg.port = [0, 1, 2, 3, 4, 5, 6, 7]  # 複数のポートを設定
-        msg.pos = [1200, 300, 1200, 300, 1200, 300, 1200, 300]  # 各ポートに対応するポジション
-        msg.spd = [7, 7, 7, 7, 7, 7, 7, 7]  # 各ポートに対応する速度
-        self.IK.publishCmd(msg)
+        # msg = PwmCmd()
+        # msg.child_id = 0  # 任意の値を設定
+        # msg.port = [0, 1, 2, 3, 4, 5, 6, 7]  # 複数のポートを設定
+        # msg.pos = [1200, 300, 1200, 300, 1200, 300, 1200, 300]  # 各ポートに対応するポジション
+        # msg.spd = [7, 7, 7, 7, 7, 7, 7, 7]  # 各ポートに対応する速度
+        # self.IK.publishCmd(msg)
+        self.IK.mov(0, -0.1, 0.1);
+        self.IK.mov(1, -0.1, 0.1);
+        self.IK.mov(2, -0.1, 0.1);
+        self.IK.mov(3, -0.1, 0.1);
 
     def publishCenter(self):
         # メッセージの作成とデータ設定
@@ -210,31 +269,59 @@ class PwmCmdPublisher(Node):
     def publishUp(self):
         # メッセージの作成とデータ設定
         msg = PwmCmd()
-        msg.child_id = 0  # 任意の値を設定
-        msg.port = [0, 1, 2, 3, 4, 5, 6, 7]  # 複数のポートを設定
-        msg.pos =  [900, 600, 900, 600, 900, 600, 900, 600]  # 各ポートに対応するポジション
-        msg.spd = [6, 6, 6, 6, 6, 6, 6, 6]  # 各ポートに対応する速度
-        self.IK.publishCmd(msg)
+        # msg.child_id = 0  # 任意の値を設定
+        # msg.port = [0, 1, 2, 3, 4, 5, 6, 7]  # 複数のポートを設定
+        # msg.pos =  [900, 600, 900, 600, 900, 600, 900, 600]  # 各ポートに対応するポジション
+        # msg.spd = [6, 6, 6, 6, 6, 6, 6, 6]  # 各ポートに対応する速度
+        # self.IK.publishCmd(msg)
+        self.IK.mov(0, -0.25, 0.7, 8);
+        self.IK.mov(1, -0.25, 0.7, 8);
+        self.IK.mov(2, -0.25, 0.7, 8);
+        self.IK.mov(3, -0.25, 0.7, 8);
+
+    def testCenter(self):
+        while(True):
+            x_t = input("mov x:")
+            x = float(x_t)
+            self.IK.mov(0, x, 0.7, 8);
+            self.IK.mov(1, -0.25, 0.3, 8);
+            self.IK.mov(2, -0.25, 0.3, 8);
+            self.IK.mov(3, x, 0.7, 8);
 
     def publish_Once(self):
         
-        self.IK.update();
+        # self.IK.update();
         cmd = input("ポートかコマンドを指定してください")
         if (cmd == "r"):
             self.publishUp()
         elif (cmd == "f"):
             self.publishDown()
-        elif (cmd == "q"):
-            self.publish_All()
+        elif (cmd == "q"):       
+            self.publishUp() 
+            time.sleep(5)
+            self.IK.mov(0, -0.25, 0.7, 7);
+            time.sleep(0.1)
+            self.IK.mov(0, -0.25, 0.3, 12);
+            time.sleep(0.2)
+            self.IK.mov(0, 0.25, 0.3, 12);
+            time.sleep(0.2)
+            self.IK.mov(0, 0.25, 0.7, 9);
+        elif (cmd == "g"):
+            self.testCenter()
         elif (cmd == "a"):
             self.publish_All()
         elif (cmd == "c"):
-            self.publishCenter()
+            self.IK.mov(0, 0, 1.0);
+            self.IK.mov(1, 0, 1.0);
+            self.IK.mov(2, 0, 1.0);
+            self.IK.mov(3, 0, 1.0);
         elif (cmd == "x"):
             x = int(input("x座標"))
             y = int(input("y座標"))
             self.IK.mov(0, x, y)
         elif (cmd == "p"):
+            ctrl_loop = threading.Thread(target=self.ctrl_th)
+            ctrl_loop.start()
             self.IK.update();
         else:
             mov_x = float(input("xを指定してください(1-180)"))
@@ -251,7 +338,12 @@ class PwmCmdPublisher(Node):
             # # メッセージのパブリッシュ
             # self.IK.publishCmd(msg)
     def loop(self):
-        self.publishDown()
+        
+        self.IK.mov(0, 0, 1.0);
+        self.IK.mov(1, 0, 1.0);
+        self.IK.mov(2, 0, 1.0);
+        self.IK.mov(3, 0, 1.0);
+        # self.publishDown()
         while(True):
             self.publish_Once()
 
@@ -259,19 +351,39 @@ class PwmCmdPublisher(Node):
         self.run_flag = False
         input("Enterで動作開始します")
         self.IK.is_run = False
+        self.IK.back = False
         while(True):
             input("q:Stop, Enter")
             self.IK.is_run = True
-            input("")
+            while(True):
+                i = input("")
+                if (i == "5"):
+                    break;
+                if (i == "0"):
+                    self.IK.back = False
+                    self.IK.is_step = True;
+                    self.IK.in_step = True;
+                elif (i == "1"):
+                    self.IK.back = True
+                    self.IK.is_step = False;
+                    self.IK.in_step = True;
+                elif (i == "2"):
+                    self.IK.back = False
+                    self.IK.is_step = False;
+                    self.IK.in_step = True;
+                    self.IK.last_step = True;
+                else:
+                    self.IK.back = False
+                    self.IK.is_step = False;
+                    self.IK.in_step = True;
+
             self.IK.is_run = False
 
 def main(args=None):
     rclpy.init(args=args)
     node = PwmCmdPublisher()
     node_loop = threading.Thread(target=node.loop)
-    ctrl_loop = threading.Thread(target=node.ctrl_th)
     node_loop.start()
-    ctrl_loop.start()
     try:
         rclpy.spin(node)
     except KeyboardInterrupt:
@@ -285,5 +397,3 @@ def main(args=None):
 if __name__ == '__main__':
     main()
 
-
-# 300~1200 =>750
