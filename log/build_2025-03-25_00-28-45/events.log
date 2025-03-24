@@ -1,0 +1,72 @@
+[0.000000] (-) TimerEvent: {}
+[0.001749] (strider_package) JobQueued: {'identifier': 'strider_package', 'dependencies': OrderedDict()}
+[0.002408] (strider_package) JobStarted: {'identifier': 'strider_package'}
+[0.099195] (-) TimerEvent: {}
+[0.199806] (-) TimerEvent: {}
+[0.300497] (-) TimerEvent: {}
+[0.401354] (-) TimerEvent: {}
+[0.502178] (-) TimerEvent: {}
+[0.602838] (-) TimerEvent: {}
+[0.703560] (-) TimerEvent: {}
+[0.804188] (-) TimerEvent: {}
+[0.904887] (-) TimerEvent: {}
+[1.005560] (-) TimerEvent: {}
+[1.106288] (-) TimerEvent: {}
+[1.207095] (-) TimerEvent: {}
+[1.308130] (-) TimerEvent: {}
+[1.408863] (-) TimerEvent: {}
+[1.509727] (-) TimerEvent: {}
+[1.610456] (-) TimerEvent: {}
+[1.711225] (-) TimerEvent: {}
+[1.811903] (-) TimerEvent: {}
+[1.912565] (-) TimerEvent: {}
+[2.013311] (-) TimerEvent: {}
+[2.114343] (-) TimerEvent: {}
+[2.215011] (-) TimerEvent: {}
+[2.315689] (-) TimerEvent: {}
+[2.416351] (-) TimerEvent: {}
+[2.517089] (-) TimerEvent: {}
+[2.617791] (-) TimerEvent: {}
+[2.718541] (-) TimerEvent: {}
+[2.819544] (-) TimerEvent: {}
+[2.912742] (strider_package) Command: {'cmd': ['/usr/bin/python3', '-W', 'ignore:setup.py install is deprecated', '-W', 'ignore:easy_install command is deprecated', 'setup.py', 'egg_info', '--egg-base', 'build/strider_package', 'build', '--build-base', '/home/kk/kk_ws/src/strider_package/build/strider_package/build', 'install', '--record', '/home/kk/kk_ws/src/strider_package/build/strider_package/install.log', '--single-version-externally-managed', 'install_data'], 'cwd': '/home/kk/kk_ws/src/strider_package', 'env': {'LESSOPEN': '| /usr/bin/lesspipe %s', 'USER': 'kk', 'SSH_CLIENT': 'fe80::2201:1361:42de:a2a6%wlan0 55045 22', 'XDG_SESSION_TYPE': 'tty', 'GIT_ASKPASS': '/home/kk/.vscode-server/cli/servers/Stable-ddc367ed5c8936efe395cffeec279b04ffd7db78/server/extensions/git/dist/askpass.sh', 'SHLVL': '1', 'LD_LIBRARY_PATH': '/home/kk/kk_ws/install/kk_driver_msg/lib:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/aarch64-linux-gnu:/opt/ros/humble/lib', 'BROWSER': '/home/kk/.vscode-server/cli/servers/Stable-ddc367ed5c8936efe395cffeec279b04ffd7db78/server/bin/helpers/browser.sh', 'MOTD_SHOWN': 'pam', 'HOME': '/home/kk', 'OLDPWD': '/home/kk/kk_ws', 'TERM_PROGRAM_VERSION': '1.98.2', 'VSCODE_IPC_HOOK_CLI': '/run/user/1000/vscode-ipc-0b76bc8d-bd3e-45b4-a45a-a49a336588ce.sock', 'ROS_PYTHON_VERSION': '3', 'VSCODE_GIT_ASKPASS_MAIN': '/home/kk/.vscode-server/cli/servers/Stable-ddc367ed5c8936efe395cffeec279b04ffd7db78/server/extensions/git/dist/askpass-main.js', 'VSCODE_GIT_ASKPASS_NODE': '/home/kk/.vscode-server/cli/servers/Stable-ddc367ed5c8936efe395cffeec279b04ffd7db78/server/node', 'SSL_CERT_FILE': '/usr/lib/ssl/certs/ca-certificates.crt', 'PYDEVD_DISABLE_FILE_VALIDATION': '1', 'BUNDLED_DEBUGPY_PATH': '/home/kk/.vscode-server/extensions/ms-python.debugpy-2025.4.1-linux-arm64/bundled/libs/debugpy', 'DBUS_SESSION_BUS_ADDRESS': 'unix:path=/run/user/1000/bus', 'COLORTERM': 'truecolor', 'COLCON_PREFIX_PATH': '/home/kk/kk_ws/install', 'ROS_DISTRO': 'humble', 'LOGNAME': 'kk', '_': '/usr/bin/colcon', 'ROS_VERSION': '2', 'XDG_SESSION_CLASS': 'user', 'TERM': 'xterm-256color', 'XDG_SESSION_ID': '1', 'ROS_LOCALHOST_ONLY': '0', 'PATH': '/home/kk/.vscode-server/cli/servers/Stable-ddc367ed5c8936efe395cffeec279b04ffd7db78/server/bin/remote-cli:/opt/ros/humble/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/home/kk/.vscode-server/extensions/ms-python.debugpy-2025.4.1-linux-arm64/bundled/scripts/noConfigScripts', 'XDG_RUNTIME_DIR': '/run/user/1000', 'SSL_CERT_DIR': '/usr/lib/ssl/certs', 'VSCODE_DEBUGPY_ADAPTER_ENDPOINTS': '/home/kk/.vscode-server/extensions/ms-python.debugpy-2025.4.1-linux-arm64/.noConfigDebugAdapterEndpoints/endpoint-1d57afc2bac5c5be.txt', 'LANG': 'C.UTF-8', 'LS_COLORS': 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:', 'VSCODE_GIT_IPC_HANDLE': '/run/user/1000/vscode-git-10d0d06aa5.sock', 'TERM_PROGRAM': 'vscode', 'ROS_DOMAIN_ID': '2', 'AMENT_PREFIX_PATH': '/home/kk/kk_ws/install/strider_package:/home/kk/kk_ws/install/kk_simulator:/home/kk/kk_ws/install/kk_receiver:/home/kk/kk_ws/install/kk_driver:/home/kk/kk_ws/install/kk_driver_msg:/opt/ros/humble', 'SHELL': '/bin/bash', 'LESSCLOSE': '/usr/bin/lesspipe %s %s', 'VSCODE_GIT_ASKPASS_EXTRA_ARGS': '', 'PWD': '/home/kk/kk_ws/src/strider_package/build/strider_package', 'SSH_CONNECTION': 'fe80::2201:1361:42de:a2a6%wlan0 55045 fe80::da3a:ddff:fec2:bf76%wlan0 22', 'XDG_DATA_DIRS': '/usr/local/share:/usr/share:/var/lib/snapd/desktop', 'PYTHONPATH': '/home/kk/kk_ws/src/strider_package/build/strider_package/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/kk/kk_ws/src/strider_package/install/strider_package/lib/python3.10/site-packages:/home/kk/kk_ws/install/strider_package/lib/python3.10/site-packages:/home/kk/kk_ws/install/kk_simulator/lib/python3.10/site-packages:/home/kk/kk_ws/install/kk_receiver/lib/python3.10/site-packages:/home/kk/kk_ws/install/kk_driver_msg/local/lib/python3.10/dist-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages', 'COLCON': '1', 'CMAKE_PREFIX_PATH': '/home/kk/kk_ws/install/kk_driver:/home/kk/kk_ws/install/kk_driver_msg'}, 'shell': False}
+[2.922885] (-) TimerEvent: {}
+[3.027997] (-) TimerEvent: {}
+[3.128822] (-) TimerEvent: {}
+[3.229559] (-) TimerEvent: {}
+[3.330230] (-) TimerEvent: {}
+[3.431006] (-) TimerEvent: {}
+[3.531802] (-) TimerEvent: {}
+[3.632596] (-) TimerEvent: {}
+[3.733271] (-) TimerEvent: {}
+[3.833935] (-) TimerEvent: {}
+[3.934672] (-) TimerEvent: {}
+[4.035509] (-) TimerEvent: {}
+[4.086458] (strider_package) StdoutLine: {'line': b'running egg_info\n'}
+[4.089348] (strider_package) StdoutLine: {'line': b'writing build/strider_package/strider_package.egg-info/PKG-INFO\n'}
+[4.090504] (strider_package) StdoutLine: {'line': b'writing dependency_links to build/strider_package/strider_package.egg-info/dependency_links.txt\n'}
+[4.091667] (strider_package) StdoutLine: {'line': b'writing entry points to build/strider_package/strider_package.egg-info/entry_points.txt\n'}
+[4.092568] (strider_package) StdoutLine: {'line': b'writing requirements to build/strider_package/strider_package.egg-info/requires.txt\n'}
+[4.093214] (strider_package) StdoutLine: {'line': b'writing top-level names to build/strider_package/strider_package.egg-info/top_level.txt\n'}
+[4.102537] (strider_package) StdoutLine: {'line': b"reading manifest file 'build/strider_package/strider_package.egg-info/SOURCES.txt'\n"}
+[4.106406] (strider_package) StdoutLine: {'line': b"writing manifest file 'build/strider_package/strider_package.egg-info/SOURCES.txt'\n"}
+[4.107149] (strider_package) StdoutLine: {'line': b'running build\n'}
+[4.107769] (strider_package) StdoutLine: {'line': b'running build_py\n'}
+[4.108292] (strider_package) StdoutLine: {'line': b'copying strider_package/adjust.py -> /home/kk/kk_ws/src/strider_package/build/strider_package/build/lib/strider_package\n'}
+[4.109812] (strider_package) StdoutLine: {'line': b'running install\n'}
+[4.111095] (strider_package) StdoutLine: {'line': b'running install_lib\n'}
+[4.114469] (strider_package) StdoutLine: {'line': b'copying /home/kk/kk_ws/src/strider_package/build/strider_package/build/lib/strider_package/adjust.py -> /home/kk/kk_ws/src/strider_package/install/strider_package/lib/python3.10/site-packages/strider_package\n'}
+[4.117510] (strider_package) StdoutLine: {'line': b'byte-compiling /home/kk/kk_ws/src/strider_package/install/strider_package/lib/python3.10/site-packages/strider_package/adjust.py to adjust.cpython-310.pyc\n'}
+[4.129211] (strider_package) StdoutLine: {'line': b'running install_data\n'}
+[4.129979] (strider_package) StdoutLine: {'line': b'running install_egg_info\n'}
+[4.135662] (-) TimerEvent: {}
+[4.136962] (strider_package) StdoutLine: {'line': b"removing '/home/kk/kk_ws/src/strider_package/install/strider_package/lib/python3.10/site-packages/strider_package-0.0.0-py3.10.egg-info' (and everything under it)\n"}
+[4.138681] (strider_package) StdoutLine: {'line': b'Copying build/strider_package/strider_package.egg-info to /home/kk/kk_ws/src/strider_package/install/strider_package/lib/python3.10/site-packages/strider_package-0.0.0-py3.10.egg-info\n'}
+[4.145305] (strider_package) StdoutLine: {'line': b'running install_scripts\n'}
+[4.234344] (strider_package) StdoutLine: {'line': b'Installing adjust script to /home/kk/kk_ws/src/strider_package/install/strider_package/lib/strider_package\n'}
+[4.235830] (-) TimerEvent: {}
+[4.236598] (strider_package) StdoutLine: {'line': b"writing list of installed files to '/home/kk/kk_ws/src/strider_package/build/strider_package/install.log'\n"}
+[4.336148] (-) TimerEvent: {}
+[4.363214] (strider_package) CommandEnded: {'returncode': 0}
+[4.417178] (strider_package) JobEnded: {'identifier': 'strider_package', 'rc': 0}
+[4.419884] (-) EventReactorShutdown: {}

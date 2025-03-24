@@ -1,0 +1,17 @@
+README.md
+package.xml
+setup.cfg
+setup.py
+build/strider_package/strider_package.egg-info/PKG-INFO
+build/strider_package/strider_package.egg-info/SOURCES.txt
+build/strider_package/strider_package.egg-info/dependency_links.txt
+build/strider_package/strider_package.egg-info/entry_points.txt
+build/strider_package/strider_package.egg-info/requires.txt
+build/strider_package/strider_package.egg-info/top_level.txt
+build/strider_package/strider_package.egg-info/zip-safe
+resource/strider_package
+strider_package/__init__.py
+strider_package/adjust.py
+test/test_copyright.py
+test/test_flake8.py
+test/test_pep257.py

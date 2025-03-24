@@ -1,0 +1,3 @@
+[console_scripts]
+adjust = strider_package.adjust:main
+

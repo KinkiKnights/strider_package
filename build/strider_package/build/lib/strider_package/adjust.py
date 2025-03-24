@@ -120,15 +120,14 @@ class StriderWalkIK():
         self.first = True;
         self.start();
         
-        self.wait_time = 0.2
-        self.diff = -0.03
+        self.wait_time = 0.1
+        self.diff = 0.05
         self.start = 0.3
-        self.finish = -0.35
-        self.forward = 0.03
-        self.backward = -0.03
-        self.y_gain = 0.5
+        self.finish = -0.3
+        self.forward = 0.05
+        self.backward = -0.05
 
-        self.stand_y = 0.8
+        self.stand_y = 0.7
         self.raise_y = 0.3
 
         self.dist = 0;
@@ -138,7 +137,6 @@ class StriderWalkIK():
         stepB = center - quat
 
         leg = [stepA, stepB, stepB, stepA]
-        y_adjust = [0,0.025,0,0.025]
         
         while(self.run):
             time.sleep(self.wait_time);
@@ -152,19 +150,15 @@ class StriderWalkIK():
                     judge = judge + self.backward
 
                 if (leg[idx] < judge):
-                    self.mov(idx, leg[idx], self.stand_y + y_adjust[idx], 10)
-                    time.sleep(0.1)
-                    self.movUP(idx, leg[idx], self.raise_y, 11)
-                    leg[idx] = leg[idx] + (self.start - self.finish)
-                    time.sleep(0.1)
-                    self.movUP(idx, leg[idx], self.raise_y, 11)
-                    time.sleep(0.3)
-                    y_diff = abs(center - leg[idx]) * self.y_gain
-                    self.mov(idx, leg[idx], self.stand_y - y_diff + y_adjust[idx], 10)
-                    time.sleep(0.5)
+                    self.movUP(idx, leg[idx], self.raise_y, 7)
+                    leg[idx] = leg[idx] - (self.start - self.finish)
+                    time.sleep(1)
+                    self.mov(idx, leg[idx], self.raise_y, 7)
+                    time.sleep(1)
+                    self.mov(idx, leg[idx], self.stand_y, 7)
+                    time.sleep(1)
             for idx in range(4):
-                y_diff = abs(center - leg[idx]) * self.y_gain
-                self.mov(idx, leg[idx], self.stand_y - y_diff + y_adjust[idx], 8)
+                self.mov(idx, leg[idx], self.stand_y, 8)
 
 
         while(self.run):

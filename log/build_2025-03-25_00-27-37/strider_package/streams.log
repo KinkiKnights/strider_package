@@ -1,0 +1,21 @@
+[2.995s] Invoking command in '/home/kk/kk_ws/src/strider_package': PYTHONPATH=/home/kk/kk_ws/src/strider_package/build/strider_package/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/kk/kk_ws/src/strider_package/install/strider_package/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base build/strider_package build --build-base /home/kk/kk_ws/src/strider_package/build/strider_package/build install --record /home/kk/kk_ws/src/strider_package/build/strider_package/install.log --single-version-externally-managed install_data
+[4.135s] running egg_info
+[4.137s] writing build/strider_package/strider_package.egg-info/PKG-INFO
+[4.140s] writing dependency_links to build/strider_package/strider_package.egg-info/dependency_links.txt
+[4.140s] writing entry points to build/strider_package/strider_package.egg-info/entry_points.txt
+[4.141s] writing requirements to build/strider_package/strider_package.egg-info/requires.txt
+[4.142s] writing top-level names to build/strider_package/strider_package.egg-info/top_level.txt
+[4.150s] reading manifest file 'build/strider_package/strider_package.egg-info/SOURCES.txt'
+[4.154s] writing manifest file 'build/strider_package/strider_package.egg-info/SOURCES.txt'
+[4.155s] running build
+[4.155s] running build_py
+[4.157s] running install
+[4.158s] running install_lib
+[4.163s] running install_data
+[4.164s] running install_egg_info
+[4.172s] removing '/home/kk/kk_ws/src/strider_package/install/strider_package/lib/python3.10/site-packages/strider_package-0.0.0-py3.10.egg-info' (and everything under it)
+[4.173s] Copying build/strider_package/strider_package.egg-info to /home/kk/kk_ws/src/strider_package/install/strider_package/lib/python3.10/site-packages/strider_package-0.0.0-py3.10.egg-info
+[4.178s] running install_scripts
+[4.261s] Installing adjust script to /home/kk/kk_ws/src/strider_package/install/strider_package/lib/strider_package
+[4.262s] writing list of installed files to '/home/kk/kk_ws/src/strider_package/build/strider_package/install.log'
+[4.381s] Invoked command in '/home/kk/kk_ws/src/strider_package' returned '0': PYTHONPATH=/home/kk/kk_ws/src/strider_package/build/strider_package/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/kk/kk_ws/src/strider_package/install/strider_package/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base build/strider_package build --build-base /home/kk/kk_ws/src/strider_package/build/strider_package/build install --record /home/kk/kk_ws/src/strider_package/build/strider_package/install.log --single-version-externally-managed install_data
