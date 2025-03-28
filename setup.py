@@ -20,7 +20,8 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'adjust = strider_package.adjust:main'
+            'adjust = strider_package.adjust:main',
+            'run = strider_package.run:main'
         ],
     },
 )

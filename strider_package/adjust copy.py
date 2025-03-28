@@ -34,7 +34,7 @@ class StriderWalkIK():
         common_center = 750
         center = [720, 870, 770, 950, 650, 940, 470, 940]
         # center = [700, 700, 700, 710, 750, 700, 600, 720]
-        # self.node.get_logger().info(f'Published(bef adjust): {msg}')
+        self.node.get_logger().info(f'Published(bef adjust): {msg}')
         for idx in range(len(msg.port)):
             adjust = center[msg.port[idx]] - common_center;
             pos = (msg.pos[idx] - common_center + adjust) * rev[msg.port[idx]] + common_center
@@ -72,7 +72,7 @@ class StriderWalkIK():
         return True
     # 機構動作
     def mov(self, idx, x, y, speed = 7):
-        print("Move to", idx, x, y)
+        print(idx, x, y)
         self.last_x[idx] = x
         root, leg = self.calc(x,y)
         if (self.checkBreak(root, leg)):
@@ -100,6 +100,24 @@ class StriderWalkIK():
             self.publishCmd(msg)
             return True
         return False
+
+    def movAll(self, xs, ys, speeds, lift_id = 0, lift_offset = 0):
+        msg = PwmCmd()
+        msg.child_id = 0
+        for idx in range(4):
+            x = xs[idx]
+            y = ys[idx]
+            speed = speeds[idx]
+            print("Leg=>", idx, x, y)
+            self.last_x[idx] = x
+            root, leg = self.calc(x,y)
+            if (self.checkBreak(root, leg)):
+                msg.port.extend([idx * 2, idx * 2 + 1])
+                msg.pos.extend([self.rad2Duty(leg), self.rad2Duty(root)])
+                msg.spd.extend([speed, speed])
+                return True
+            return False
+        self.publishCmd(msg)
         
     
     def start(self):        
@@ -109,7 +127,7 @@ class StriderWalkIK():
         self.base_x = 0
         self.grand_x = [0.35, 0.05, 0.2, -0.1]
         self.x_offset = [ -0.15, -0.15, 0, 0]
-        self.y_offset = [-0.03, -0.03, -0.02, -0.03]
+        self.y_offset = [-0.03, -0.03, -0.05, -0.025]
 
         self.LIMIT_X = -0.2
         self.START_X = 0.4
@@ -118,9 +136,8 @@ class StriderWalkIK():
         self.UPDATE_JUMP = 0.1
 
     def step(self, idx):
-        print("start step motion:", idx)
         y_diff = abs(self.center - self.leg[idx]) * self.y_gain
-        self.mov(idx, self.leg[idx], self.stand_y[idx] + self.y_adjust[idx] - y_diff + self.y_kick[idx], 11)
+        self.mov(idx, self.leg[idx], self.stand_y[idx] + self.y_adjust[idx] - y_diff + self.y_kick[idx], 9)
         time.sleep(0.1)
         self.movUP(idx, self.leg[idx], self.raise_y, 12)
         self.leg[idx] = self.leg[idx] + (self.start - self.finish)
@@ -132,37 +149,7 @@ class StriderWalkIK():
         y_diff = abs(self.center - self.leg[idx]) * self.y_gain
         self.mov(idx, self.leg[idx], self.stand_y[idx] - y_diff + self.y_adjust[idx], 10)
         time.sleep(0.3)
-
-    def diffNextStep(self, idx, next_step):
-        if (idx == next_step):
-            print("idx:", idx, "step", next_step, "=> +")
-            return self.next_diff;
-        if ((idx + 2) % 4 == next_step):
-            print("idx:", idx, "step", next_step, "=> -")
-            return -self.next_diff
-        print("idx:", idx, "step", next_step, "=> 0")
-        return 0
-
-    def floatLeg(self, target_idx, xs):
-        BASE_Y = 0.7
-        FLOAT_Y = -0.1;
-        REV_FLOAT_Y = -0.05;
-        PAIR = [3,2,1,0]
-        for idx in range(4):
-            y_diff = 0.0
-            if (idx == target_idx ):
-                y_diff = REV_FLOAT_Y
-            if (PAIR[idx] == target_idx ):
-                y_diff = FLOAT_Y
-            self.mov(idx,xs[idx], BASE_Y + y_diff + self.y_adjust[idx], 8);
-    def flatLeg(self, xs, x_offset = 0):
-        BASE_Y = 0.7
-        for idx in range(4):
-            xs[idx] = xs[idx] + x_offset
-            self.mov(idx,xs[idx], BASE_Y + self.y_adjust[idx], 8);
     
-    
-
 
     def update(self):
         self.run = True;
@@ -181,8 +168,6 @@ class StriderWalkIK():
         self.stand_y = [0.8, 0.8, 0.8,0.8]
         self.raise_y = 0.2
 
-        self.next_diff = 0.2
-
         self.dist = 0;
         self.center = (self.start + self.finish) / 2
         quat = (self.start - self.finish) / 4
@@ -190,7 +175,7 @@ class StriderWalkIK():
         stepB = self.center - quat
 
         self.leg = [stepA, stepB, stepB, stepA]
-        self.y_adjust = [0,0.035,0.03,0.03]
+        self.y_adjust = [0,0.03,0,0.03]
         self.y_kick = [0.1,0.1,0.1,0.1]
 
         """
@@ -200,97 +185,17 @@ class StriderWalkIK():
         self.mov(1, -0.1, 0.1, 8);
         self.mov(2, -0.1, 0.1, 8);
         self.mov(3, -0.1, 0.1, 8);
-        i = input("歩行開始します")
+        time.sleep(3)
+        input("歩行開始します")
         self.mov(0, -0.25, 0.7, 9);
         self.mov(1, -0.25, 0.7, 9);
         self.mov(2, -0.25, 0.7, 9);
         self.mov(3, -0.25, 0.7, 9);
         time.sleep(3)
 
-
-        BASE_Y = 0.7
-        JUMP_Y = 0.5
-        JUMP_YR = 0.7
-        x_pos = [0.2,0.2,-0.2,-0.2]
-        self.mov(0, x_pos[0], BASE_Y, 11)
-        self.mov(1, x_pos[1], BASE_Y, 11)
-        self.mov(2, x_pos[2], BASE_Y, 11)
-        self.mov(3, x_pos[3], BASE_Y, 11)
-        time.sleep(2)
-        while(self.run):
-            self.mov(0, x_pos[0], BASE_Y, 11)
-            self.mov(1, x_pos[1], BASE_Y, 11)
-            self.mov(2, x_pos[2], BASE_Y, 11)
-            self.mov(3, x_pos[3], BASE_Y, 11)
-            time.sleep(2)
-            self.mov(0, x_pos[0], JUMP_YR, 11)
-            self.mov(1, x_pos[1], JUMP_Y, 11)
-            self.mov(2, x_pos[2], JUMP_Y, 11)
-            self.mov(3, x_pos[3], JUMP_YR, 11)
-            time.sleep(0.3)
-            self.mov(0, x_pos[0], BASE_Y, 11)
-            self.mov(1, x_pos[1], BASE_Y, 11)
-            self.mov(2, x_pos[2], BASE_Y, 11)
-            self.mov(3, x_pos[3], BASE_Y, 11)
-            time.sleep(2)
-            self.mov(0, x_pos[0], JUMP_Y, 11)
-            self.mov(1, x_pos[1], JUMP_YR, 11)
-            self.mov(2, x_pos[2], JUMP_YR, 11)
-            self.mov(3, x_pos[3], JUMP_Y, 11)
-            time.sleep(0.3)
-
-        BASE_Y = 0.7
-        x_pos = [0.2,0.2,-0.2,-0.2]
-        while(self.run):
-            self.floatLeg(0, x_pos)
-            time.sleep(1)
-            x_pos[0] = 0.4
-            self.mov(0, x_pos[0], BASE_Y, 10)
-            time.sleep(0.5)
-
-            self.flatLeg(x_pos)
-            time.sleep(0.5)
-            
-            self.floatLeg(1, x_pos)
-            time.sleep(1)
-            x_pos[1] = 0.4
-            self.mov(0, x_pos[1], BASE_Y, 10)
-            time.sleep(0.3)
-            
-            self.flatLeg(x_pos)
-            time.sleep(0.4)
-
-            time.sleep(100)
-
-            
-
-
-        """
-        クロール歩容テスト
-        """
-        target_idx = 0;
-        BASE_Y = 0.7
-        FLOAT_Y = -0.3;
-        REV_FLOAT_Y = -0.1;
-        PAIR = [3,2,1,0]
-        X_POS = [0.2,0.2,-0.2,-0.2]
-        while(self.run):
-            target_idx = (target_idx + 1) % 4
-            for idx in range(4):
-                y_diff = 0.0
-                if (idx == target_idx ):
-                    y_diff = REV_FLOAT_Y
-                if (PAIR[idx] == target_idx ):
-                    y_diff = FLOAT_Y
-                self.mov(idx,X_POS[idx], BASE_Y + y_diff + self.y_adjust[idx], 8)
-            input("Go Next Step")
-
         """
         全身行けた
         """
-        next_step_arrow = [3,2,0,1]
-        next_step = -1
-        next_diff = 0.1
         while(self.run):
             time.sleep(self.wait_time);
             for idx in range(4):
@@ -303,14 +208,10 @@ class StriderWalkIK():
                     judge = judge + self.backward
 
                 if (self.leg[idx] < judge):
-                    # 次の足を除外軸に追加                
-                    next_step = next_step_arrow[idx]
                     self.step(idx)
             for idx in range(4):
                 y_diff = abs(self.center - self.leg[idx]) * self.y_gain
-                if (next_step == idx):
-                    y_diff = y_diff - next_diff
-                self.mov(idx,self.leg[idx], self.stand_y[idx] - y_diff + self.y_adjust[idx], 8)
+                self.mov(idx, self.leg[idx], self.stand_y[idx] - y_diff + self.y_adjust[idx], 8)
 
 
 
